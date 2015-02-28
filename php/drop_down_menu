@@ -1,0 +1,36 @@
+<?php
+
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ * This document is for genrating Company's Name in All product in Header.
+ */
+try {
+    $connection= new db();
+    if(empty($connection)){
+        throw new Exception;
+    }
+    $link= $connection->connect($config['db_name'],$config['db_user'],$config['db_pass']);
+    if(empty($link)){
+        throw new Exception;
+    }
+    $handle=$connection->execute($link,'Select name from home_comp limit 5');
+    
+    function show($name){
+        $url="../product/allpro.php?company=$name";
+        echo "<a href=$url><li>".$name.'</li><a>'; 
+    }
+    foreach ($handle->fetchAll(PDO::FETCH_FUNC,'show')as $row) ;    
+    
+} catch (Exception $exc) {
+    echo $exc->getTraceAsString();
+    die();
+}
+
+unset($handle);
+unset($link);
+unset($connection);
+
+                                
